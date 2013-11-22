@@ -150,7 +150,7 @@ yes_no
 
 apt-get install tor -y
 
-cat << EOF > /etc/torrc
+cat << EOF > /etc/tor/torrc
 Log notice file /var/log/tor/notices.log
 VirtualAddrNetwork 10.192.0.0/10
 AutomapHostsSuffixes .onion,.exit
