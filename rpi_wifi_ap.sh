@@ -144,7 +144,7 @@ echo "up iptables-restore < /etc/iptables.ipv4.nat" >> /etc/network/interfaces
 
 ###############################################################################################
 
-echo "Do you want ton configure your Pi as ToR anonymizing middlebox ? (y/n)"
+echo "Do you want to configure your Pi as ToR anonymizing middlebox ? (y/n)"
 
 yes_no
 
