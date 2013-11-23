@@ -12,28 +12,9 @@ else
 fi
 }
 
-cat << INTRO
------------------------------
-This script will help you configure your Raspberry Pi as
-a wireless acces point.
-
-***
-***
-Run it as root, or with sudo,
-and reboot your Pi once you're done.
-
-THIS WILL ERASE YOUR NETWORK CONFIGURATION.
-***
-***
------------------------------
-
-Do you want to continue ? (y/n)
-INTRO
-
-yes_no
-
 ###############################################################################################
-
+ap_setup()
+{
 cat << MSG
 Specify your subnet:
 (e.g: 192.168.10.0)
@@ -127,8 +108,10 @@ update-rc.d dnsmasq enable
 service hostapd restart
 service dnsmasq restart
 
+}
 ###############################################################################################
-
+nat_setup()
+{
 echo "Do you want to configure NAT ? (y/n)"
 
 yes_no
@@ -149,12 +132,16 @@ iptables -S
 iptables-save > /etc/iptables.ipv4.nat
 
 echo "up iptables-restore < /etc/iptables.ipv4.nat" >> /etc/network/interfaces
+}
 
 ###############################################################################################
-
+tor_setup()
+{
 echo "Do you want to configure your Pi as ToR anonymizing middlebox ? (y/n)"
 
 yes_no
+
+wlan0_ip=$(ifconfig wlan0|egrep -o "addr:([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)"|sed "s/addr://")
 
 apt-get install tor -y
 
@@ -164,9 +151,9 @@ VirtualAddrNetwork 10.192.0.0/10
 AutomapHostsSuffixes .onion,.exit
 AutomapHostsOnResolve 1
 TransPort 9040
-TransListenAddress $subnet.1
+TransListenAddress $wlan0_ip
 DNSPort 53
-DNSListenAddress $subnet.1
+DNSListenAddress $wlan0_ip
 EOF
 
 iptables -F
@@ -187,4 +174,38 @@ chmod 644 /var/log/tor/notices.log
 update-rc.d tor enable
 
 service tor restart
+}
+
+cat << INTRO
+-----------------------------
+This script will help you configure your Raspberry Pi as
+a wireless acces point.
+
+***
+***
+Run it as root, or with sudo,
+and reboot your Pi once you're done.
+
+THIS WILL ERASE YOUR NETWORK CONFIGURATION.
+***
+***
+-----------------------------
+
+ 1 - Configure wifi access point. 
+ 2 - Setup NAT. (only if you want access to the internet)
+ 3 - Setup Tor anonymizing middlebox. (requires NAT)
+INTRO
+
+echo -n "Choice: "
+read answer
+
+case "$answer" in
+
+    1) ap_setup
+    ;;
+    2) nat_setup
+    ;;
+    3) tor_setup
+    ;;
+esac
 
