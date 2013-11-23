@@ -122,6 +122,9 @@ chmod 755 /usr/sbin/hostapd
 update-rc.d hostapd enable
 update-rc.d dnsmasq enable
 
+service hostapd restart
+service dnsmasq restart
+
 ###############################################################################################
 
 echo "Do you want to configure NAT ? (y/n)"
@@ -180,4 +183,6 @@ chown debian-tor /var/log/tor/notices.log
 chmod 644 /var/log/tor/notices.log
 
 update-rc.d tor enable
+
+service tor restart
 
