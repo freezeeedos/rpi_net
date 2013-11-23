@@ -113,6 +113,8 @@ EOF
 
 echo "DAEMON_CONF=\"/etc/hostapd/hostapd.conf\"" >> /etc/default/hostapd
 
+ifconfig wlan0 $subnet.1/24
+
 wget -c http://www.adafruit.com/downloads/adafruit_hostapd.zip
 unzip adafruit_hostapd.zip
 mv /usr/sbin/hostapd /usr/sbin/hostapd.ORIG
