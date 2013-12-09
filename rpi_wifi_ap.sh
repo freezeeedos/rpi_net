@@ -1,4 +1,7 @@
 #!/bin/bash
+# Based on the tutorials at learn.adafruit.com
+# http://learn.adafruit.com/setting-up-a-raspberry-pi-as-a-wifi-access-point
+# http://learn.adafruit.com/onion-pi
 
 yes_no()
 {
